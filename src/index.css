@@ -84,6 +84,22 @@ a {
   text-decoration: none;
 }
 
+/* Sticky Header Offset for Sections */
+section[id], header[id] {
+  scroll-margin-top: 85px;
+}
+
+@media (max-width: 768px) {
+  section[id], header[id] {
+    scroll-margin-top: 70px;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
 button {
   cursor: pointer;
   font-family: inherit;

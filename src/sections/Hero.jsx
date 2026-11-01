@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, ArrowRight, Play } from 'lucide-react';
+import { Sparkles, ArrowRight, Play, Dumbbell } from 'lucide-react';
 import Button from '../components/Button';
 
 export default function Hero({ onClaimPass, onExploreFacility }) {
@@ -40,9 +40,17 @@ export default function Hero({ onClaimPass, onExploreFacility }) {
             >
               CLAIM 7-DAY VIP PASS
             </Button>
-            <a href="#facilities" className="btn-secondary" onClick={onExploreFacility}>
-              <Play size={16} className="text-orange" />
-              EXPLORE THE FACILITY
+            <a 
+              href="#programs" 
+              className="btn-secondary" 
+              onClick={(e) => {
+                e.preventDefault();
+                const progElem = document.getElementById('programs');
+                if (progElem) progElem.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <Dumbbell size={16} className="text-orange" />
+              EXPLORE PROGRAMS
             </a>
           </div>
 

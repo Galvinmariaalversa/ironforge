@@ -1382,9 +1382,46 @@
   animation: slideInRight 0.3s ease;
 }
 
-@keyframes slideInRight {
-  from { transform: translateX(100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+/* Back to Top Control */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: rgba(18, 19, 25, 0.92);
+  border: 1px solid var(--border-accent);
+  color: var(--color-orange);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), var(--glow-orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 900;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(10px);
+}
+
+.back-to-top-btn:hover {
+  background: var(--color-orange);
+  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(255, 85, 0, 0.5);
+}
+
+.back-to-top-btn:focus-visible {
+  outline: 2px solid var(--color-orange);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .back-to-top-btn {
+    bottom: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+  }
 }
 
 /* ----------------- Class Schedule Component Styles ----------------- */
@@ -1568,6 +1605,15 @@
     display: block;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     min-height: 44px;
+    transition: all 0.2s ease;
+  }
+
+  .nav-link.active {
+    color: var(--color-orange);
+    background: rgba(255, 85, 0, 0.1);
+    border-left: 3px solid var(--color-orange);
+    border-bottom-color: rgba(255, 85, 0, 0.2);
+    padding-left: 16px;
   }
 
   .mobile-toggle {

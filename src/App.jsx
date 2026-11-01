@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, ChevronUp } from 'lucide-react';
 import './App.css';
 
 // Components
@@ -31,6 +31,8 @@ import { GALLERY_DATA } from './data/gymData';
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [billingCycle, setBillingCycle] = useState('annual');
   const [toastMessage, setToastMessage] = useState(null);
@@ -53,13 +55,57 @@ export default function App() {
     notes: ''
   });
 
-  // Handle header scroll
+  // Handle header scroll and back-to-top visibility
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 40);
+      setShowBackToTop(scrollY > 450);
+
+      if (scrollY < 120) {
+        setActiveSection('hero');
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Active section tracking with IntersectionObserver
+  useEffect(() => {
+    const sectionIds = [
+      'hero',
+      'about',
+      'programs',
+      'schedule',
+      'coaches',
+      'facilities',
+      'pricing',
+      'transformations',
+      'faq',
+      'contact'
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '-85px 0px -40% 0px',
+        threshold: [0.25, 0.5]
+      }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   const triggerToast = (msg) => {
@@ -169,6 +215,7 @@ export default function App() {
       {/* 1. Header / Navigation */}
       <Navbar
         isScrolled={isScrolled}
+        activeSection={activeSection}
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
         onJoinClick={() => setVipModalOpen(true)}
@@ -257,6 +304,17 @@ export default function App() {
         isOpen={manifestoModalOpen}
         onClose={() => setManifestoModalOpen(false)}
       />
+
+      {/* Back to Top Control */}
+      {showBackToTop && (
+        <button
+          className="back-to-top-btn"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll back to top of page"
+        >
+          <ChevronUp size={22} />
+        </button>
+      )}
 
       {/* Toast Notifications */}
       {toastMessage && (
